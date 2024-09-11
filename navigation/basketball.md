@@ -12,9 +12,16 @@ Curry's rise to fame wasn’t straightforward. Despite being overlooked by major
 
 In the NBA, Curry has won multiple MVP awards (2015, 2016) and led the Warriors to several championships (2015, 2017, 2018). His style of play, with his deep shots and quick release, has changed how basketball is played, with many teams now focusing on three-point shooting.
 
-Off the court, Curry is known for his charitable work and positive influence. He’s not only admired for his basketball skills but also for his leadership and community involvement.
 
 
+But let's be honest though.
+
+<p style="color: #FBBC04; font-weight: bold;">Ja Morant is better.</p>
+
+<img src="https://i.ytimg.com/vi/5GD1aXIjhCQ/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBXv5n3sEkOex9N-cum3EYo8ZWIZA" alt="The GOAT" style="width:100%;max-width:600px;">
+
+
+     When did Steph dunk on Lebron?
 
 
 

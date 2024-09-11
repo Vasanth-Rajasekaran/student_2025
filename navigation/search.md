@@ -14,6 +14,6 @@ permalink: /tool-setup/
 
 ## Applications:
     Created a Slack Account
-        Joined Nighthawk Slack Channell
+        Joined Nighthawk Slack Channel
     Created a GitHub Account
         Created own repository
