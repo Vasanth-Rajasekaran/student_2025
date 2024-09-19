@@ -8,65 +8,141 @@ hide: true
 ---
 
 <!-- Liquid:  statements -->
-
-<!--- Concatenation of site URL to frontmatter image  --->
 {% assign sprite_file = site.baseurl | append: page.image %}
-<!--- Has is a list variable containing mario metadata for sprite --->
-{% assign hash = site.data.mario_metadata %}  
-<!--- Size width/height of Sprit images --->
+{% assign hash = site.data.mario_metadata %}
 {% assign pixels = 256 %}
 
-<!--- HTML for page contains <p> tag named "Mario" and class properties for a "sprite"  -->
+<!-- Page Content -->
+<div class="container">
+  <h1>Welcome to Vasanth Rajasekaran's Page</h1>
+  <p>AP Computer Science Principles, Class of 2025</p>
 
-<p id="mario" class="sprite"></p>
-  
-<!--- Embedded Cascading Style Sheet (CSS) rules, 
-        define how HTML elements look 
---->
+  <!-- Mario Sprite -->
+  <div class="sprite-container">
+    <p id="mario" class="sprite"></p>
+  </div>
+
+  <!-- Riddle Section -->
+  <div class="riddle-container">
+    <p id="riddle" class="riddle-text"></p>
+    <button id="nextRiddle" class="riddle-button">Next Riddle</button>
+  </div>
+</div>
+
+<!-- Styles -->
 <style>
+  /* General page styles */
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
 
-  /*CSS style rules for the id and class of the sprite...
-  */
+  h1 {
+    text-align: center;
+    color: #4A90E2;
+    font-size: 2.5rem;
+    margin-top: 20px;
+  }
+
+  p {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Sprite container styles */
+  .sprite-container {
+    text-align: center;
+    margin: 20px 0;
+  }
+
   .sprite {
     height: {{pixels}}px;
     width: {{pixels}}px;
     background-image: url('{{sprite_file}}');
     background-repeat: no-repeat;
+    display: inline-block;
   }
 
-  /*background position of sprite element
-  */
   #mario {
-    background-position: calc({{animations[0].col}} * {{pixels}} * -1px) calc({{animations[0].row}} * {{pixels}}* -1px);
+    background-position: calc({{animations[0].col}} * {{pixels}} * -1px) calc({{animations[0].row}} * {{pixels}} * -1px);
+  }
+
+  /* Riddle section styles */
+  .riddle-container {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .riddle-text {
+    font-size: 1.3rem;
+    color: #555;
+    margin-bottom: 20px;
+  }
+
+  .riddle-button {
+    padding: 10px 20px;
+    background-color: #4A90E2;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .riddle-button:hover {
+    background-color: #357ABD;
+  }
+
+  /* Responsive design for mobile */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    .riddle-container {
+      padding: 15px;
+    }
+
+    .riddle-button {
+      width: 100%;
+    }
   }
 </style>
 
-<!--- Embedded executable code--->
+<!-- JavaScript -->
 <script>
-  ////////// convert YML hash to javascript key:value objects /////////
-
-  var mario_metadata = {}; //key, value object
-  {% for key in hash %}  
-  
-  var key = "{{key | first}}"  //key
-  var values = {} //values object
-  values["row"] = {{key.row}}
-  values["col"] = {{key.col}}
-  values["frames"] = {{key.frames}}
-  mario_metadata[key] = values; //key with values added
-
+  var mario_metadata = {};
+  {% for key in hash %}
+  var key = "{{key | first}}";
+  var values = {};
+  values["row"] = {{key.row}};
+  values["col"] = {{key.col}};
+  values["frames"] = {{key.frames}};
+  mario_metadata[key] = values;
   {% endfor %}
-
-  ////////// game object for player /////////
 
   class Mario {
     constructor(meta_data) {
-      this.tID = null;  //capture setInterval() task ID
-      this.positionX = 0;  // current position of sprite in X direction
+      this.tID = null;
+      this.positionX = 0;
       this.currentSpeed = 0;
-      this.marioElement = document.getElementById("mario"); //HTML element of sprite
-      this.pixels = {{pixels}}; //pixel offset of images in the sprite, set by liquid constant
-      this.interval = 100; //animation time interval
+      this.marioElement = document.getElementById("mario");
+      this.pixels = {{pixels}};
+      this.interval = 100;
       this.obj = meta_data;
       this.marioElement.style.position = "absolute";
     }
@@ -101,26 +177,6 @@ hide: true
       this.animate(this.obj["Run1"], 6);
     }
 
-    startPuffing() {
-      this.stopAnimate();
-      this.animate(this.obj["Puff"], 0);
-    }
-
-    startCheering() {
-      this.stopAnimate();
-      this.animate(this.obj["Cheer"], 0);
-    }
-
-    startFlipping() {
-      this.stopAnimate();
-      this.animate(this.obj["Flip"], 0);
-    }
-
-    startResting() {
-      this.stopAnimate();
-      this.animate(this.obj["Rest"], 0);
-    }
-
     stopAnimate() {
       clearInterval(this.tID);
     }
@@ -128,106 +184,59 @@ hide: true
 
   const mario = new Mario(mario_metadata);
 
-  ////////// event control /////////
-
   window.addEventListener("keydown", (event) => {
     if (event.key === "ArrowRight") {
       event.preventDefault();
       if (event.repeat) {
-        mario.startCheering();
-      } else {
-        if (mario.currentSpeed === 0) {
-          mario.startWalking();
-        } else if (mario.currentSpeed === 3) {
-          mario.startRunning();
-        }
-      }
-    } else if (event.key === "ArrowLeft") {
-      event.preventDefault();
-      if (event.repeat) {
-        mario.stopAnimate();
-      } else {
-        mario.startPuffing();
-      }
-    }
-  });
-
-  //touch events that enable animations
-  window.addEventListener("touchstart", (event) => {
-    event.preventDefault(); // prevent default browser action
-    if (event.touches[0].clientX > window.innerWidth / 2) {
-      // move right
-      if (currentSpeed === 0) { // if at rest, go to walking
-        mario.startWalking();
-      } else if (currentSpeed === 3) { // if walking, go to running
         mario.startRunning();
+      } else if (mario.currentSpeed === 0) {
+        mario.startWalking();
       }
-    } else {
-      // move left
-      mario.startPuffing();
     }
   });
 
-  //stop animation on window blur
-  window.addEventListener("blur", () => {
-    mario.stopAnimate();
-  });
-
-  //start animation on window focus
-  window.addEventListener("focus", () => {
-     mario.startFlipping();
-  });
-
-  //start animation on page load or page refresh
-  document.addEventListener("DOMContentLoaded", () => {
-    // adjust sprite size for high pixel density devices
-    const scale = window.devicePixelRatio;
-    const sprite = document.querySelector(".sprite");
-    sprite.style.transform = `scale(${0.2 * scale})`;
-    mario.startResting();
-  });
 
 
+  
 
-
-
-</script>
-
-<!-- Add this HTML where you want the riddle to appear -->
-<p id="riddle"></p>
-<button id="nextRiddle">Next Riddle</button>
-
-<script>
-  // Array of riddles and their answers
+  // Riddle Section JavaScript
   const riddles = [
-    { question: "I’m tall when I’m young, and I’m short when I’m old. I glow with light when I’m alive, but when I’m dead, I’m not. What am I?", answer: "A candle" },
+    { question: "I’m tall when I’m young, and I’m short when I’m old. What am I?", answer: "A candle" },
     { question: "What has many keys but can’t open a single lock?", answer: "A piano" },
-    { question: "I’m not alive, but I can grow; I don’t have lungs, but I need air; I don’t have a mouth, but water kills me. What am I?", answer: "Fire" },
-    { question: "I can be cracked, made, told, and played. What am I?", answer: "A joke" },
-    { question: "What has a heart that doesn’t beat?", answer: "An artichoke" },
-    { question: "The more you take, the more you leave behind. What am I?", answer: "Footsteps" },
-    { question: "What has one eye but can’t see?", answer: "A needle" },
-    { question: "What has hands but can’t clap?", answer: "A clock" },
-    { question: "What can you catch but not throw?", answer: "A cold" },
-    { question: "What comes down but never goes up?", answer: "Rain" }
+    // More riddles here...
   ];
 
-  // Function to get a random riddle
   function getRandomRiddle() {
     const randomIndex = Math.floor(Math.random() * riddles.length);
     return riddles[randomIndex];
   }
 
-  // Function to display a riddle
   function displayRiddle() {
     const riddle = getRandomRiddle();
     const riddleElement = document.getElementById('riddle');
     riddleElement.innerHTML = `<strong>Riddle:</strong> ${riddle.question}<br><strong>Answer:</strong> ${riddle.answer}`;
   }
 
-  // Event listener for the "Next Riddle" button
   document.getElementById('nextRiddle').addEventListener('click', displayRiddle);
-
-  // Display a riddle when the page loads
   window.addEventListener('DOMContentLoaded', displayRiddle);
 </script>
+
+
+# Games
+
+| Games   | Description                       |
+|-----------|-----------------------------------|
+| [**Calculator**]({{site.baseurl}}//calculator/)     | Try using my calculator. |
+| [**Snake Game**](https://www.wikipedia.org) | Online encyclopedia for information.    |
+| [**GitHub**](https://www.github.com)     | Platform for hosting and sharing code.  |
+
+
+
+
+# Game Code
+
+| Games   | Description                       |
+|-----------|-----------------------------------|
+| [**Calculator**]({{site.baseurl}}//calculator-blog)     | Learn how I made the Snake game. |
+| [**Wikipedia**](https://www.wikipedia.org) | Online encyclopedia for information.    |
+| [**GitHub**](https://www.github.com)     | Platform for hosting and sharing code.  |

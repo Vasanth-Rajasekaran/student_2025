@@ -1,9 +1,9 @@
 ---
 layout: game
 title: Scientific Calculator 
-description: Solving .
+description: A pretty advanced use of JavaScript building classic snake game using menu controls, key events, snake simulation and timers.
 search_exclude: true
-permalink: /calculator/
+permalink: /snakegame/
 ---
 
 <html lang="en">

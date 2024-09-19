@@ -24,11 +24,4 @@ What sets Ja apart is his drive and hustle. He came from a smaller college, but 
 
 
 
-<script src="https://utteranc.es/client.js"
-        repo="Vasanth-Rajasekaran/vasanth_2025"
-        issue-term="pathname"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
 
